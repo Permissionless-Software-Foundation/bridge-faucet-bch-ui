@@ -16,52 +16,52 @@ class BridgeComponent extends React.Component {
 
   render () {
     return (
-      <div className="bridge-container">
-        <Row className="bridge-content">
+      <div className='bridge-container'>
+        <Row className='bridge-content'>
           <Col sm={2} />
           <Col sm={8}>
             <Box
-              className="hover-shadow border-none mt-2"
+              className='hover-shadow border-none mt-2'
               loaded={!_this.state.inFetch}
             >
               <Row>
-                <Col sm={12} className="text-center">
+                <Col sm={12} className='text-center'>
                   <h1>
                     <FontAwesomeIcon
-                      className="title-icon"
-                      size="xs"
-                      icon="road"
+                      className='title-icon'
+                      size='xs'
+                      icon='road'
                     />
                     <span>Bridge</span>
                   </h1>
                 </Col>
-                <Col sm={12} className="text-center mt-2 mb-2">
-                  <Row className="flex justify-content-center">
+                <Col sm={12} className='text-center mt-2 mb-2'>
+                  <Row className='flex justify-content-center'>
                     <Col sm={10}>
                       <div>
                         <Text
-                          id="address"
-                          name="address"
-                          placeholder="Address"
-                          label="Address"
-                          labelPosition="above"
+                          id='address'
+                          name='address'
+                          placeholder='Address'
+                          label='Address'
+                          labelPosition='above'
                           onChange={_this.handleUpdate}
                         />
                       </div>
                     </Col>
                   </Row>
                 </Col>
-                <Col sm={12} className="text-center mb-2">
+                <Col sm={12} className='text-center mb-2'>
                   <Button
-                    text="Submit"
-                    type="primary"
-                    className="btn-lg"
+                    text='Submit'
+                    type='primary'
+                    className='btn-lg'
                     onClick={_this.handleSubmit}
                   />
                 </Col>
-                <Col sm={12} className="text-center">
+                <Col sm={12} className='text-center'>
                   {_this.state.errMsg && (
-                    <p className="error-color">{_this.state.errMsg}</p>
+                    <p className='error-color'>{_this.state.errMsg}</p>
                   )}
                 </Col>
               </Row>
@@ -74,11 +74,12 @@ class BridgeComponent extends React.Component {
   }
 
   handleUpdate (event) {
-    let value = event.target.value
+    const value = event.target.value
     _this.setState({
       [event.target.name]: value
     })
   }
+
   handleSubmit () {
     try {
       const { address } = _this.state
