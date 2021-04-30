@@ -12,6 +12,8 @@ import { Sidebar } from 'adminlte-2-react'
 // Example/Demo component. This is how you would build a component internal to
 // your wallet app/site.
 import DemoComponent from '../../demo-component'
+import FaucetComponent from '../../faucet'
+import BridgeComponent from '../../bridge'
 
 // TX History Plugin.
 // This is an example of an external plugin for the wallet. It's a modular
@@ -31,42 +33,50 @@ const MenuComponents = props => {
   return [
     {
       key: 'Tokens',
-      component: <Tokens key='Tokens' {...props} />,
-      menuItem: <Item icon='fas-coins' key='Tokens' text='Tokens' />
+      component: <Tokens key="Tokens" {...props} />,
+      menuItem: <Item icon="fas-coins" key="Tokens" text="Tokens" />
     },
     {
       key: 'Send/Receive BCH',
-      component: <SendReceive key='Send/Receive BCH' {...props} />,
+      component: <SendReceive key="Send/Receive BCH" {...props} />,
       menuItem: (
         <Item
-          icon='fa-exchange-alt'
-          key='Send/Receive BCH'
-          text='Send/Receive BCH'
+          icon="fa-exchange-alt"
+          key="Send/Receive BCH"
+          text="Send/Receive BCH"
         />
       )
     },
     {
       key: 'Wallet',
-      component: <Wallet key='Wallet' {...props} />,
-      menuItem: <Item icon='fa-wallet' key='Wallet' text='Wallet' />
+      component: <Wallet key="Wallet" {...props} />,
+      menuItem: <Item icon="fa-wallet" key="Wallet" text="Wallet" />
     },
     {
       key: 'Configure',
-      component: <Configure key='Configure' {...props} />,
-      menuItem: <Item icon='fas-cog' key='Configure' text='Configure' />
+      component: <Configure key="Configure" {...props} />,
+      menuItem: <Item icon="fas-cog" key="Configure" text="Configure" />
     },
     {
       key: 'TX History',
-      component: <TXHistory key='TX History' {...props} />,
-      menuItem: (
-        <Item icon='fas-cog' key='TX History' text='TX History' />
-      )
+      component: <TXHistory key="TX History" {...props} />,
+      menuItem: <Item icon="fas-cog" key="TX History" text="TX History" />
+    },
+    {
+      key: 'Faucet',
+      component: <FaucetComponent key="Faucet" {...props} />,
+      menuItem: <Item icon="fas-faucet" key="Faucet" text="Faucet" />
+    },
+    {
+      key: 'Bridge',
+      component: <BridgeComponent key="Bridge" {...props} />,
+      menuItem: <Item icon="fas-road" key="Bridge" text="Bridge" />
     },
     {
       key: 'Demo Component',
-      component: <DemoComponent key='Demo Component' {...props} />,
+      component: <DemoComponent key="Demo Component" {...props} />,
       menuItem: (
-        <Item icon='fas-cog' key='Demo Component' text='Demo Component' />
+        <Item icon="fas-cog" key="Demo Component" text="Demo Component" />
       )
     }
   ]
