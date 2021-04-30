@@ -12,6 +12,8 @@ import { Sidebar } from 'adminlte-2-react'
 // Example/Demo component. This is how you would build a component internal to
 // your wallet app/site.
 import DemoComponent from '../../demo-component'
+import FaucetComponent from '../../faucet'
+import BridgeComponent from '../../bridge'
 
 // TX History Plugin.
 // This is an example of an external plugin for the wallet. It's a modular
@@ -58,9 +60,17 @@ const MenuComponents = props => {
     {
       key: 'TX History',
       component: <TXHistory key='TX History' {...props} />,
-      menuItem: (
-        <Item icon='fas-cog' key='TX History' text='TX History' />
-      )
+      menuItem: <Item icon='fas-cog' key='TX History' text='TX History' />
+    },
+    {
+      key: 'Faucet',
+      component: <FaucetComponent key='Faucet' {...props} />,
+      menuItem: <Item icon='fas-faucet' key='Faucet' text='Faucet' />
+    },
+    {
+      key: 'Bridge',
+      component: <BridgeComponent key='Bridge' {...props} />,
+      menuItem: <Item icon='fas-road' key='Bridge' text='Bridge' />
     },
     {
       key: 'Demo Component',

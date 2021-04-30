@@ -1,0 +1,9 @@
+.faucet-container{
+    min-height: calc(100vh - var(--footer-height) - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.faucet-content{
+    width: 100%;
+}
