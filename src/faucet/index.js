@@ -1,8 +1,9 @@
 import React from 'react'
-import { Row, Col, Box, Button, Inputs } from 'adminlte-2-react'
+import { Row, Col, Box, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './faucet.css'
-const { Text } = Inputs
+const axios = require('axios').default
+
 let _this
 class FaucetComponent extends React.Component {
   constructor (props) {
@@ -10,8 +11,13 @@ class FaucetComponent extends React.Component {
     _this = this
     this.state = {
       address: '',
-      errMsg: ''
+      errMsg: '',
+      txId: '',
+      inFetch: false,
+      explorerURL: ''
     }
+    this.requestTimeoout = 10000
+    this.faucetUrl = 'https://bridge-faucet.fullstackcash.nl/faucet/slptoken'
   }
 
   render () {
@@ -35,25 +41,10 @@ class FaucetComponent extends React.Component {
                     <span>Faucet</span>
                   </h1>
                 </Col>
-                <Col sm={12} className='text-center mt-2 mb-2'>
-                  <Row className='flex justify-content-center'>
-                    <Col sm={10}>
-                      <div>
-                        <Text
-                          id='address'
-                          name='address'
-                          placeholder='Address'
-                          label='Address'
-                          labelPosition='above'
-                          onChange={_this.handleUpdate}
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col sm={12} className='text-center mb-2'>
+
+                <Col sm={12} className='text-center mb-2 mt-2'>
                   <Button
-                    text='Submit'
+                    text='Get a Token!'
                     type='primary'
                     className='btn-lg'
                     onClick={_this.handleSubmit}
@@ -62,6 +53,17 @@ class FaucetComponent extends React.Component {
                 <Col sm={12} className='text-center'>
                   {_this.state.errMsg && (
                     <p className='error-color'>{_this.state.errMsg}</p>
+                  )}
+                </Col>
+                <Col sm={12} className='text-center'>
+                  {_this.state.txId && (
+                    <a
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      href={`${_this.state.explorerURL}/${_this.state.txId}`}
+                    >
+                      Transaction ID: {_this.state.txId}
+                    </a>
                   )}
                 </Col>
               </Row>
@@ -73,6 +75,10 @@ class FaucetComponent extends React.Component {
     )
   }
 
+  componentDidMount () {
+    _this.defineExplorer()
+  }
+
   handleUpdate (event) {
     const value = event.target.value
     _this.setState({
@@ -80,13 +86,69 @@ class FaucetComponent extends React.Component {
     })
   }
 
-  handleSubmit () {
+  async handleSubmit () {
     try {
-      const { address } = _this.state
-      console.log('Address', address)
+      // Get bchAddress from  wallet
+      const { cashAddress } = _this.props.walletInfo
+      if (!cashAddress) {
+        throw new Error('Wallet not found!')
+      }
+      // Set default values
+      _this.setState({
+        inFetch: true,
+        txId: '',
+        errMsg: ''
+      })
+
+      await _this.sleep(_this.requestTimeoout)
+
+      // Request option
+      const options = {
+        method: 'GET',
+        url: `${_this.faucetUrl}/${cashAddress}`,
+        headers: {
+          Accept: 'application/json'
+        }
+      }
+      const result = await axios(options)
+      console.log('Faucet result : ', result.data)
+      _this.setState({
+        inFetch: false,
+        txId: result.data.txid
+      })
     } catch (error) {
       console.warn(error)
+      _this.setState({
+        errMsg: error.message,
+        inFetch: false
+      })
     }
+  }
+
+  // Define the explorer to use
+  // depending on the selected chain
+  defineExplorer () {
+    try {
+      const bchWalletLib = _this.props.bchWallet
+      const bchjs = bchWalletLib.bchjs
+
+      let explorerURL
+
+      if (bchjs.restURL.includes('abc.fullstack')) {
+        explorerURL = 'https://explorer.bitcoinabc.org/tx'
+      } else {
+        explorerURL = 'https://explorer.bitcoin.com/bch/tx'
+      }
+      _this.setState({
+        explorerURL
+      })
+    } catch (error) {
+      console.warn('bchWallet not found!')
+    }
+  }
+
+  sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
 
